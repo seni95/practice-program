@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<label for="miniwage">최저시급</label>
+<input type="text" id="miniwage">
+<label for="come">출근시간</label>
+<input type="text" class="come" onKeyup="inputTimeColon(this);" placeholder="HH:MM" maxlength="5"/>
+<label for="out">퇴근시간</label>
+<input type="text" class="out" onKeyup="inputTimeColon(this);" placeholder="HH:MM" maxlength="5"/>
+<div id = "today">오늘 일한 금액</div>
+<button onclick="calculate()">계산하기</button>
+<div id="total">총액</div>
+    <script>
+    let miniwage = document.querySelector('#miniwage');
+    let come = document.querySelector('.come');
+    let realtotal =0; 
+    let out = document.querySelector('.out');
+    let button = document.querySelector('button');
+    function inputTimeColon(time) {
+// replace 함수를 사용하여 콜론( : )을 공백으로 치환한다.
+var replaceTime = time.value.replace(/\:/g, "");
+// 텍스트박스의 입력값이 4~5글자 사이가 되는 경우에만 실행한다.
+if(replaceTime.length >= 4 && replaceTime.length < 5) {
+
+    var hours = replaceTime.substring(0, 2);      // 선언한 변수 hours에 시간값을 담는다.
+    var minute = replaceTime.substring(2, 4);    // 선언한 변수 minute에 분을 담는다.
+
+    // isFinite함수를 사용하여 문자가 선언되었는지 확인한다.
+    if(isFinite(hours + minute) == false) {
+        alert("문자는 입력하실 수 없습니다.");
+        time.value = "00:00";
+        return false;
+    }
+
+    // 두 변수의 시간과 분을 합쳐 입력한 시간이 24시가 넘는지를 체크한다.
+    if(hours + minute > 2400) {
+        alert("시간은 24시를 넘길 수 없습니다.");
+        time.value = "24:00";
+        return false;
+    }
+
+    // 입력한 분의 값이 60분을 넘는지 체크한다.
+    if(minute > 60) {
+        alert("분은 60분을 넘길 수 없습니다.");
+        time.value = hours + ":00";
+        return false;
+    }
+
+    time.value = hours + ":" + minute;
+}
+}
+function calculate(){
+var come1 = come.value.replace(/\:/g, "");
+var out1 = out.value.replace(/\:/g,"");
+// 텍스트박스의 입력값이 4~5글자 사이가 되는 경우에만 실행한다.
+if(come1.length >= 4 && come1.length < 5) {
+
+    var hours1 = come1.substring(0, 2);      // 선언한 변수 hours에 시간값을 담는다.
+    var minute1 = come1.substring(2, 4);    // 선언한 변수 minute에 분을 담는다.
+}
+if(out1.length >= 4 && out1.length < 5) {
+
+var hours2 = out1.substring(0, 2);      // 선언한 변수 hours에 시간값을 담는다.
+var minute2 = out1.substring(2, 4);    // 선언한 변수 minute에 분을 담는다.
+}
+
+let hours3 = hours2-hours1;
+let minute3 = minute2-minute1;
+
+today = hours3*miniwage.value + miniwage.value/60*minute3;
+
+let todaywage = document.querySelector('#today');
+todaywage.innerHTML = "오늘 일한 금액 : " + today;
+
+let total = document.querySelector('#total');
+realtotal += today;
+total.innerHTML = "총 액 : " + realtotal;
+
+}
+    </script>
+</body>
+</html>
